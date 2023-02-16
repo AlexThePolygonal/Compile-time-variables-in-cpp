@@ -116,10 +116,10 @@ struct stopvar4{};
 STORE<tag4, double>;
 STORE<stopvar4, True>;
 
-// CEXPR_DO While<MakeList4<tag4, stopvar4>, stopvar4, 0, true>;
+CEXPR_DO While<MakeList4<tag4, stopvar4>, stopvar4, 0, true>;
 
-// static_assert(replace_std::is_same_v<value<stopvar4>, False>);
-// static_assert(replace_std::is_same_v<value<tag4>, next<next<next<next<double>>>>>);
+static_assert(replace_std::is_same_v<value<stopvar4>, False>);
+static_assert(replace_std::is_same_v<value<tag4>, next<next<next<next<double>>>>>);
 
 
 int main() {

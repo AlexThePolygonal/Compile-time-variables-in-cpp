@@ -20,7 +20,8 @@ namespace replace_std {
     struct is_same<T, T> {
         constexpr static bool value = true;
     };
-    template <class T, class U> constexpr bool is_same_v = is_same<T, U>::value;
+    template <class T, class U> 
+    constexpr bool is_same_v = is_same<T, U>::value;
 };
 
 
@@ -158,11 +159,12 @@ namespace type_list {
     template <class Name, auto=[](){}>
     using last_value = decltype(injected(flag<Name, cexpr_counter::load<Name>() - 1>()));
 
-    template <class Name,unsigned N, auto=[](){}>
-    using value = decltype(injected(flag<Name, N>()));
+    template <class Name, int N, auto=[](){}>
+    using value_at = decltype(injected(flag<Name, N>()));
 
     template <class Name, auto=[](){}>
     constexpr unsigned len = cexpr_counter::load<Name>() - 1;
+
 };
 
 //
@@ -196,19 +198,16 @@ struct False : Bool {};
 /// To use, implement your side-effects in func_wrap::call, leaving func_wrap a wrapper
 ///
 template <bool cond, class func_wrap, class F, class G, auto v = [](){}> 
-
 struct cond_subst;
 
 template <bool, class func_wrap, class F, class G, auto v> 
-
 struct cond_subst : 
-func_wrap:: template call<G> 
+    func_wrap:: template call<G> 
 {};
 
 template <class func_wrap, class F, class G, auto v>
-
 struct cond_subst<true, func_wrap, F, G, v> : 
-func_wrap:: template call<F>
+    func_wrap:: template call<F>
 {};
 
 ///
@@ -217,9 +216,7 @@ func_wrap:: template call<F>
 ///
 template <class name>
 struct setter {
-
     template <class T, auto = [](){}>
-
     struct call : type_var::Store<name, T> {};
 };
 
@@ -233,7 +230,8 @@ struct setter {
 template <class func_wrap, unsigned N, auto v = [](){}>
 
 struct Recurse :
-func_wrap:: template call< [](){} >,  Recurse<func_wrap, N-1, v> 
+    func_wrap:: template call<[](){}>,  
+    Recurse<func_wrap, N-1, v> 
 {};
 
 template <class func_wrap, auto v> 
@@ -249,18 +247,20 @@ struct Recurse<func_wrap, 0, v>
 ///     func_wrap::call
 ///
 template <class func_wrap, class stopcond, unsigned N = 0, bool sfinae_cond = true, auto v = [](){}>
-
 struct While;
 
 template <class func_wrap, class stopcond, unsigned N, bool sfinae_cond, auto v>
-
 struct While :
-func_wrap:: template call<[](){}>,  
-While<func_wrap, stopcond, N+1, replace_std::is_same_v<type_var::value<stopcond>, True>, v> 
+    func_wrap:: template call<[](){}>,  
+    While<
+        func_wrap, 
+        stopcond, 
+        N+1, 
+        replace_std::is_same_v<type_var::value<stopcond>, True>, 
+        v
+    > 
 {};
 
 template <class func_wrap, class stopcond, unsigned N, auto v>
-
-struct While<func_wrap, stopcond, N, false, v> 
-{};
+struct While<func_wrap, stopcond, N, false, v> {};
 
