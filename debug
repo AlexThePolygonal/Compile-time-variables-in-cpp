@@ -1,0 +1,20 @@
+#!/bin/bash
+# compile debug
+
+
+#g++ -std=c++20 -Wall -Wextra -Wno-non-template-friend -pedantic -fpermissive -O0 -fsanitize=address,undefined  main.cpp -o __run__
+#g++-12 -std=c++20 -Wall -Wextra -Wno-non-template-friend -pedantic -fpermissive -O0 -fsanitize=address,undefined  main.cpp -o __run__
+#clang++ -std=c++20  main.cpp -o __run__ 
+clang++-15 -std=c++20 main.cpp -o __run__
+endl=""
+args=""
+
+if test -f __run__
+then
+echo "It COMPILES! MUAHAHAHAHAHAHA"
+chmod 777 __run__
+echo "$args"
+echo "$endl"
+echo "$args" | ./__run__
+rm __run__;
+fi

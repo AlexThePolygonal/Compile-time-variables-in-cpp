@@ -1,0 +1,4 @@
+clang-crash*
+gcc-crash*
+.*
+!.gitignore
