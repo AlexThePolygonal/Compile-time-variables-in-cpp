@@ -159,15 +159,13 @@ namespace type_list {
     template <class Name, auto=[](){}>
     using last_value = decltype(injected(flag<Name, cexpr_counter::load<Name>() - 1>()));
 
-    template <class Name, int N, auto=[](){}>
+    template <class Name, long N, auto=[](){}>
     using value_at = decltype(injected(flag<Name, N>()));
 
     template <class Name, auto=[](){}>
     constexpr unsigned len = cexpr_counter::load<Name>() - 1;
 
 };
-
-//
 
 
 /// Useful types and macros :
