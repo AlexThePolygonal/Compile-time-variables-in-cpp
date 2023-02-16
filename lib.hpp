@@ -116,11 +116,11 @@ namespace type_var {
 
     // details
     template <typename T>
-    struct MakeInstanceOf {T& operator*();};
+    struct ConjureInstanceOf {T& operator*();};
 
-    template <class Name, class Value, auto = [](){}, int N = cexpr_counter::fetch_add<Name>()> 
+    template <class Name, class Value, auto = [](){}, int N = cexpr_counter::fetch_add<Name>()>
     struct Store {
-        friend auto injected(flag<Name, N>) { return *MakeInstanceOf<Value>{}; }
+        friend auto injected(flag<Name, N>) { return *ConjureInstanceOf<Value>{}; }
     };
 
     template <class Name, auto=[](){}>
@@ -139,10 +139,33 @@ namespace type_var {
 ///
 ///
 
-/*
- TBD
-*/
+namespace type_list {
+    // details
+    template <class Name, int N> 
+    struct flag {
+        friend auto injected(flag<Name, N>);
+    };
 
+    // details
+    template <typename T>
+    struct ConjureInstanceOf {T& operator*();};
+
+    template <class Name, class Value, auto = [](){}, int N = cexpr_counter::fetch_add<Name>()>
+    struct Append {
+        friend auto injected(flag<Name, N>) { return *ConjureInstanceOf<Value>{}; }
+    };
+
+    template <class Name, auto=[](){}>
+    using last_value = decltype(injected(flag<Name, cexpr_counter::load<Name>() - 1>()));
+
+    template <class Name,unsigned N, auto=[](){}>
+    using value = decltype(injected(flag<Name, N>()));
+
+    template <class Name, auto=[](){}>
+    constexpr unsigned len = cexpr_counter::load<Name>() - 1;
+};
+
+//
 
 
 /// Useful types and macros :
