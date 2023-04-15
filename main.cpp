@@ -187,28 +187,28 @@ static_assert(cexpr_counter::load<test>() == 4);
     static_assert(is_same_v<value<k>, next<next<next<next<int>>>>>);
 
 // Block 6
-    // VAR(l);
-    // STORE<l, int>;
+    VAR(l);
+    STORE<l, int>;
 
-    // template <class name>
-    // struct NestedListMaker {
-    //     template <class>
-    //     struct temp {};
+    template <class name>
+    struct NestedListMaker {
+        template <class>
+        struct temp {};
 
-    //     template <class T>
-    //     struct Make : 
-    //         Store<temp<T>,int>,
-    //         Recurse<
-    //             ListMaker<temp<T>>::template Make, 
-    //             len<name>
-    //         >,
-    //         Store<name, value<temp<T>>>
-    //     {};
-    // };
+        template <class T>
+        struct Make : 
+            Store<temp<T>,int>,
+            Recurse<
+                ListMaker<temp<T>>::template Make, 
+                len<name>
+            >,
+            Store<name, value<temp<T>>>
+        {};
+    };
 
-    // static_assert(len<l> == 1);
-    // CEXPR_DO Recurse<NestedListMaker<l>::Make, 2>;
-    // static_assert(is_same_v<value<l>, int>, "GCC, sorry");
+    static_assert(len<l> == 1);
+    CEXPR_DO Recurse<NestedListMaker<l>::Make, 2>;
+    static_assert(is_same_v<value<l>, next<next<int>>>, "GCC, sorry");
 
 
 // template <class name>

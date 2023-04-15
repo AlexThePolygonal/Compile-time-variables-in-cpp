@@ -1,3 +1,4 @@
+# IN PROGRESS DO NOT DISTURB
 # Compile-time type variables
 
 This mini-library implements *stateful metaprogramming*, that is, mutable constexpr "variables". Sounds insane, right?
