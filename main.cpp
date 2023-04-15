@@ -99,6 +99,37 @@ static_assert(cexpr_counter::load<test>() == 4);
     static_assert(len<f> == 4);
     static_assert(is_same_v<pack_of<f>, Argpass<int, long, int, int>>, "Pack does not contain the history of the variable. Maybe Store is being cached?");
 
+// Block 6
+    VAR(f1);
+    STORE<f1, int>;
+
+    template <class name>
+    struct NestedListMaker_OrderTest {
+        template <class>
+        struct temp {};
+
+        template <class T>
+        struct Make : 
+            Store<temp<T>,int>,
+            DeferSubst<Setter<temp<T>>::template Set, bool>,
+            Store<name, value<temp<T>>>
+        {};
+    };
+
+    static_assert(len<f1> == 1);
+    template struct NestedListMaker_OrderTest<f1>::
+        template Make<replace_std::uniq<>>;
+
+
+#ifdef __clang__
+    static_assert(is_same_v<value<f1>, bool>);
+#elif __GNUG__
+    static_assert(is_same_v<value<f1>, int>);
+#endif
+
+
+
+
 ///
 /// Test conditional operations
 ///
@@ -185,31 +216,6 @@ static_assert(cexpr_counter::load<test>() == 4);
     static_assert(is_same_v<value<k>, next<next<int>>>);
     CEXPR_DO Recurse<ListMaker<k>::Make, 2>;
     static_assert(is_same_v<value<k>, next<next<next<next<int>>>>>);
-
-// Block 6
-    VAR(l);
-    STORE<l, int>;
-
-    template <class name>
-    struct NestedListMaker {
-        template <class>
-        struct temp {};
-
-        template <class T>
-        struct Make : 
-            Store<temp<T>,int>,
-            Recurse<
-                ListMaker<temp<T>>::template Make, 
-                len<name>
-            >,
-            Store<name, value<temp<T>>>
-        {};
-    };
-
-    static_assert(len<l> == 1);
-    CEXPR_DO Recurse<NestedListMaker<l>::Make, 2>;
-    static_assert(is_same_v<value<l>, next<next<int>>>, "GCC, sorry");
-
 
 // template <class name>
 // struct MakeList {

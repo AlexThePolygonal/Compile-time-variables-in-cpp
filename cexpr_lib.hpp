@@ -428,4 +428,15 @@ struct DoWhile<func, stopcond, N, false, v> {};
 
 #endif
 #endif 
+
+template <template <class,class> class func, class val>
+struct DeferSubst : 
+    func<val, replace_std::uniq<[](){}>>
+    {   
+};
+
+template <template <class,class> class func, class val>
+using defer_subst = func<val, replace_std::uniq<[](){}>>;
+
+
 };
