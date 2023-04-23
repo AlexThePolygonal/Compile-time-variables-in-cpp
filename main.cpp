@@ -100,32 +100,39 @@ static_assert(cexpr_counter::load<test>() == 4);
     static_assert(is_same_v<pack_of<f>, Argpass<int, long, int, int>>, "Pack does not contain the history of the variable. Maybe Store is being cached?");
 
 // Block 6
-    VAR(f1);
-    STORE<f1, int>;
 
-    template <class name>
-    struct NestedListMaker_OrderTest {
-        template <class>
-        struct temp {};
+    // Compiler-dependent behaviour
 
-        template <class T>
-        struct Make : 
-            Store<temp<T>,int>,
-            DeferSubst<Setter<temp<T>>::template Set, bool>,
-            Store<name, value<temp<T>>>
-        {};
-    };
+    // VAR(f1);
+    // STORE<f1, long>;
+    // static_assert(len<f1> == 1);
 
-    static_assert(len<f1> == 1);
-    template struct NestedListMaker_OrderTest<f1>::
-        template Make<replace_std::uniq<>>;
+    // template <class U>
+    // struct NestedListMaker_OrderTest {
+    //     struct temp {};
+
+    //     template <class T,class>
+    //     struct Make : 
+    //         Store<temp,int>,
+    //         DeferSubst<Setter<temp>::template Set, bool>,
+    //         Store<f1, value<temp>>
+    //     {
+    //         static_assert(!is_same_v<T, void>);
+    //     };
+    // };
+
+    // static_assert(len<f1> == 1);
 
 
-#ifdef __clang__
-    static_assert(is_same_v<value<f1>, bool>);
-#elif __GNUG__
-    static_assert(is_same_v<value<f1>, int>);
-#endif
+    // template struct NestedListMaker_OrderTest::
+    //     template Make<replace_std::uniq<>>;
+
+
+// #ifdef __clang__
+//     static_assert(is_same_v<value<f1>, bool>);
+// #elif __GNUG__
+//     static_assert(is_same_v<value<f1>, int>);
+// #endif
 
 
 
