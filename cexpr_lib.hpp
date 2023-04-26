@@ -408,10 +408,10 @@ struct Recurse<func, 0, v>
 ///     func<>;
 /// while($stopcond == True)
 ///
-template <template<class> class func, class stopcond, unsigned N = 0, bool sfinae_cond = true, class v = replace_std::uniq<[](){}>>
+template <template<class> class func, class stopcond, unsigned N = 0, bool specialization_cond = true, class v = replace_std::uniq<[](){}>>
 struct DoWhile;
 
-template <template<class> class func, class stopcond, unsigned N, bool sfinae_cond, class v>
+template <template<class> class func, class stopcond, unsigned N, bool specialization_cond, class v>
 struct DoWhile :
     func<replace_std::uniq<[](){}>>,
     DoWhile<
