@@ -10,13 +10,11 @@ This a useless toy example, don't take it seriously.
 
 struct Foo1 : // this is a "variable"
     type_var::Store<Foo1, int> // we store a value in it
-    {
-};
+{};
 
 struct Foo2 : // this is another "variable"
-    type_var::Store<Foo2, long> // we store a value in it
-    {
-};
+    type_var::Store<Foo2, bool> // we store a value in it
+{};
 
 template <class Var>
 struct Bar {
@@ -30,8 +28,7 @@ template struct Bar<Foo1>; // instantiate it for Foo1;
 
 struct change_value : 
     type_var::Store<Foo2, int> // change the value of Foo2
-    {
-};
+{};
 
 static_assert(std::is_same_v<typename Bar<Foo2>::TypeValue, int>); // passes
 ```

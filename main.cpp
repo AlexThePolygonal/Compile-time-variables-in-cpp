@@ -103,6 +103,18 @@ static_assert(cexpr_counter::load<test>() == 4);
 
     // Compiler-dependent behaviour
 
+
+    template <template <class,class> class func, class val>
+    struct DeferSubst : 
+        func<val, replace_std::uniq<[](){}>>
+        {   
+    };
+
+    template <template <class, class> class func, class val>
+    using defer_subst = func<val, replace_std::uniq<[](){}>>;
+
+
+
     // VAR(f1);
     // STORE<f1, long>;
     // static_assert(len<f1> == 1);
@@ -124,7 +136,7 @@ static_assert(cexpr_counter::load<test>() == 4);
     // static_assert(len<f1> == 1);
 
 
-    // template struct NestedListMaker_OrderTest::
+    // template struct NestedListMaker_OrderTest
     //     template Make<replace_std::uniq<>>;
 
 
