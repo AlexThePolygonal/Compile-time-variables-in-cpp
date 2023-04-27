@@ -285,7 +285,7 @@ namespace type_var {
     template<class T, class Val, class v = replace_std::uniq<[](){}>, int R = detail::fadd_reader<detail::name_guard<T>, Val, 0>(int{})>
     struct Store {
         // Index of Val in the variable T, impl #1
-        using CurrentIdx = cexpr_lib_aux::Int<R>;
+        using CurrentIdx = cexpr_lib_aux::Int<R - 1>;
 
         // Index of Val in the variable T, impl #2
         template <class U> struct ComputeIdx { static constexpr int idx = R - 1;}; 
