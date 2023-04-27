@@ -77,8 +77,7 @@ struct CachedFoo {
 
 template struct type_var::Store<Var, int>; // Var now contains int
 
-// Not going to work!
-static_assert(is_same_v<typename CachedFoo::Baz, bool>); // evaluates to false
+constexpr bool result = is_same_v<typename CachedFoo::Baz, int>; // will be false
 ```
 To evade that, make the compiler refresh the values in Foo like this:
 ```cpp
